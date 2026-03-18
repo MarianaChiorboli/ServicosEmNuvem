@@ -1,35 +1,18 @@
-# Define a versão do Docker Compose
-version: '3.8'
-
-# Define os serviços (containers) que serão executados
 services:
-  # Serviço do backend
   backend:
-    # Constrói a imagem a partir do Dockerfile na pasta back_end
     build:
       context: .
       dockerfile: back_end/Dockerfile
-    # Nome do container
     container_name: servicos-backend
-    # Mapeia a porta 25000 do container para a porta 25000 da máquina local
     ports:
       - "25000:25000"
-    # Variáveis de ambiente (opcional)
-    environment:
-      - FLASK_ENV=production
-    # Reinicia o container automaticamente se ele falhar
     restart: unless-stopped
 
-  # Serviço do frontend
   frontend:
-    # Constrói a imagem a partir do Dockerfile na pasta front_end
     build:
       context: ./front_end
       dockerfile: Dockerfile
-    # Nome do container
     container_name: servicos-frontend
-    # Mapeia a porta 80 do container para a porta 8080 da máquina local
     ports:
       - "8080:80"
-    # Reinicia o container automaticamente se ele falhar
     restart: unless-stopped
