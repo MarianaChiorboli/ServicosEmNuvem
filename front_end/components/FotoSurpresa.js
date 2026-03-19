@@ -1,23 +1,40 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import styles from './FotoSurpresa.module.css';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://172.31.30.31:25000';
-
 export default function FotoSurpresa() {
-  const [mostrarFoto, setMostrarFoto] = useState(false);
+  const [imagem, setImagem] = useState(null);
   const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState(null);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setCarregando(true);
-    setMostrarFoto(false);
-    // Pequeno delay para dar feedback visual
-    setTimeout(() => {
-      setMostrarFoto(true);
+    setErro(null);
+    setImagem(null);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/foto`
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao buscar foto');
+      }
+
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+
+      // Pequeno delay visual
+      setTimeout(() => {
+        setImagem(imageUrl);
+        setCarregando(false);
+      }, 300);
+    } catch (err) {
+      setErro('Erro ao carregar a foto. Tente novamente.');
       setCarregando(false);
-    }, 300);
+      console.error(err);
+    }
   };
 
   return (
@@ -33,11 +50,12 @@ export default function FotoSurpresa() {
         {carregando ? 'Carregando...' : 'Mostrar foto'}
       </button>
 
+      {erro && <p className={styles.erro}>{erro}</p>}
+
       <div className={styles.fotoArea}>
-        {mostrarFoto && (
-          // eslint-disable-next-line @next/next/no-img-element
+        {imagem && (
           <img
-            src={`${BACKEND_URL}/foto`}
+            src={imagem}
             alt="Foto surpresa"
             className={styles.foto}
           />

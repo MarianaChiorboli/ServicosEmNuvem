@@ -1,20 +1,25 @@
+version: '3.8'
+
 services:
   backend:
-    build:
-      context: ./back_end
-      dockerfile: Dockerfile
-    container_name: servicos-backend
-    ports:
-      - "25000:25000"
-    restart: unless-stopped
+    build: ./back_end
+    container_name: backend
+    expose:
+      - "25000"   # 🔒 privado
+    networks:
+      - app-network
 
   frontend:
-    build:
-      context: ./front_end
-      dockerfile: Dockerfile
-    container_name: servicos-frontend
+    build: ./front_end
+    container_name: frontend
     ports:
-      - "8080:8080"
+      - "8080:3000"  # 🌐 público
     environment:
-      - NEXT_PUBLIC_BACKEND_URL=http://localhost:25000
-    restart: unless-stopped
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:25000
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:

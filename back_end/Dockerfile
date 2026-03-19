@@ -1,15 +1,10 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copia o backend
-COPY app.py .
+COPY . .
 
-# Copia a imagem
-COPY image.jpeg .
-
-# Instala dependências
-RUN pip install --no-cache-dir flask flask-cors
+RUN pip install flask flask-cors
 
 EXPOSE 25000
 
