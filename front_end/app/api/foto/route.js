@@ -1,6 +1,6 @@
 export async function GET() {
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:25000';
+    process.env.NEXT_PUBLIC_BACKEND_URL || 'http://backend:25000';
 
   try {
     const response = await fetch(`${BACKEND_URL}/foto`, {
@@ -21,6 +21,7 @@ export async function GET() {
         'Cache-Control': 'no-store'
       }
     });
+
   } catch (error) {
     console.error('Erro no proxy:', error);
 

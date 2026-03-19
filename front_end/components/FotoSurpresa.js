@@ -14,9 +14,8 @@ export default function FotoSurpresa() {
     setImagem(null);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/foto`
-      );
+      // ✅ CORRETO: chama o proxy do Next
+      const response = await fetch('/api/foto');
 
       if (!response.ok) {
         throw new Error('Erro ao buscar foto');
@@ -25,11 +24,11 @@ export default function FotoSurpresa() {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
 
-      // Pequeno delay visual
       setTimeout(() => {
         setImagem(imageUrl);
         setCarregando(false);
       }, 300);
+
     } catch (err) {
       setErro('Erro ao carregar a foto. Tente novamente.');
       setCarregando(false);
