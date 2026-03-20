@@ -15,7 +15,7 @@ services:
     ports:
       - "8080:3000"  # 🌐 público
     environment:
-      - NEXT_PUBLIC_BACKEND_URL=http://backend:25000
+      - BACKEND_URL=http://backend:25000
     depends_on:
       - backend
     networks:
