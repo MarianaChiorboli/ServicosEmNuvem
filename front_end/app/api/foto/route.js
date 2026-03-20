@@ -1,6 +1,6 @@
 export async function GET() {
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || 'http://backend:25000';
+    process.env.BACKEND_URL || 'http://backend:25000';
 
   try {
     const response = await fetch(`${BACKEND_URL}/foto`, {
